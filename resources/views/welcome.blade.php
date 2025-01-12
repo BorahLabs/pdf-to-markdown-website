@@ -66,7 +66,7 @@
         <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
             <h2 class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">How do you convert PDF to LLM-compatible Markdown?</h2>
             <p class="mt-6 text-xl/8">
-                Right now, we are using a [simple PDF to Markdown converter](https://github.com/microsoft/markitdown). Soon, we will add the ability to use custom formatters we are developing that will transform the resulting Markdown content into a better format, properly using headings, lists, and other formatting options.
+                Right now, we are using a <a href="https://github.com/microsoft/markitdown" class="text-blue-500">simple PDF to Markdown converter</a>. Soon, we will add the ability to use custom formatters we are developing that will transform the resulting Markdown content into a better format, properly using headings, lists, and other formatting options.
             </p>
             <div class="prose mt-8 max-w-none">
                 <p>When we think about PDFs, we should understand them as containers of information that were primarily designed for human consumption and precise visual presentation. They excel at maintaining consistent formatting across different devices and platforms, but this very strength becomes a limitation when we want to work with AI systems.</p>
