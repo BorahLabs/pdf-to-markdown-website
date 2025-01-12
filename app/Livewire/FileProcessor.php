@@ -46,10 +46,15 @@ class FileProcessor extends Component implements HasForms
         $data = $this->form->getState();
 
         try {
-            $process = Process::env([
-                'PATH' => dirname(config('services.markitdown.binary_path')),
-            ])
-                ->run(config('services.markitdown.binary_path') . ' ' . Storage::path($data['file']));
+            if (config('services.markitdown.docker_binary_path')) {
+                $process = Process::env([
+                    'PATH' => dirname(config('services.markitdown.docker_binary_path')),
+                ])->run(config('services.markitdown.docker_binary_path') . ' run --rm -i markitdown:latest < ' . escapeshellarg(Storage::path($data['file'])));
+            } else {
+                $process = Process::env([
+                    'PATH' => dirname(config('services.markitdown.binary_path')),
+                ])->run(config('services.markitdown.binary_path') . ' ' . Storage::path($data['file']));
+            }
             if (! empty($process->errorOutput())) {
                 $this->errorMessage = 'Error processing file. Please, try again later or with another file.';
                 $this->result = null;

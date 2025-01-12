@@ -36,6 +36,7 @@ return [
     ],
 
     'markitdown' => [
+        'docker_binary_path' => env('MARKITDOWN_DOCKER_BINARY_PATH'),
         'binary_path' => env('MARKITDOWN_BINARY_PATH'),
     ],
 
