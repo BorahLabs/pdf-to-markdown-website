@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Submission;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms;
@@ -44,7 +45,11 @@ class FileProcessor extends Component implements HasForms
     public function processFile()
     {
         $data = $this->form->getState();
-
+        $submission = new Submission([
+            'file_hash' => hash_file('sha256', Storage::path($data['file'])),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         try {
             if (config('services.markitdown.docker_binary_path')) {
                 $process = Process::env([
@@ -58,12 +63,16 @@ class FileProcessor extends Component implements HasForms
             if (! empty($process->errorOutput())) {
                 $this->errorMessage = 'Error processing file. Please, try again later or with another file.';
                 $this->result = null;
+                $submission->status = 'failed';
+                $submission->save();
                 logger()->error($process->errorOutput());
                 return;
             }
 
             $this->result = $process->output();
             $this->errorMessage = null;
+            $submission->status = 'completed';
+            $submission->save();
         } finally {
             if (Storage::exists($data['file'])) {
                 Storage::delete($data['file']);
